@@ -1,0 +1,45 @@
+claude-code-ms-azure-template/
+│
+├── .claude/
+│   ├── instructions.md
+│   ├── guard-rails.md
+│   │
+│   ├── sub-agents/
+│   │   ├── developer-agent/
+│   │   │   └── agent.md
+│   │   ├── test-agent/
+│   │   │   └── agent.md
+│   │   ├── review-agent/
+│   │   │   └── agent.md
+│   │   └── documentation-agent/
+│   │       └── agent.md
+│   │
+│   ├── context/
+│   │   ├── ms-dotnet-patterns.md
+│   │   ├── azure-best-practices.md
+│   │   ├── naming-conventions.md
+│   │   ├── security-standards.md
+│   │   ├── common-libraries.md
+│   │   └── microservices-patterns.md
+│   │
+│   ├── templates/
+│   │   └── .gitkeep
+│   │
+│   └── config/
+│       └── mcp-servers.md
+│
+├── docs/
+│   └── .gitkeep
+│
+├── src/
+│   └── .gitkeep
+│
+├── tests/
+│   └── .gitkeep
+│
+├── .gitignore
+├── .editorconfig
+├── README.md
+├── ARCHITECTURE.md
+├── SETUP.md
+└── FOLDER-STRUCTURE.txt (this file)
