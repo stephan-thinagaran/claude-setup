@@ -1,18 +1,19 @@
 # Claude Code Instructions
 
 ## Overview
-Generic, reusable template for MS/Azure microservices using .NET 10, async/await, dependency injection, and xUnit tests.
+Generic, reusable template for MS/Azure microservices using .NET 9, async/await, dependency injection, and xUnit tests.
 
 ---
 
-## Four Agents (Sequential Workflow)
+## Skills (Sequential Workflow)
 
-**Developer Agent** → Write code  
-**Test Agent** → Write tests (>80% coverage)  
-**Review Agent** → Review code & security  
-**Documentation Agent** → Update docs  
+**`/dev-scaffold`** → Create microservice structure
+**`/dev-implement`** → Write production code + wire DI
+**`/test`** → Write tests + coverage analysis (>80% target)
+**`/review`** → Review code & security
+**`/docs`** → Update documentation
 
-Each agent reads:
+Each skill runs in an isolated context (`context: fork`) and reads:
 - `guard-rails.md` (standards)
 - Relevant context files
 - Existing code/docs
@@ -21,14 +22,17 @@ Each agent reads:
 
 ## How to Invoke
 
-Manual, sequential:
+Sequential workflow for a new feature:
 
 ```
-1. "Developer Agent: [task description]"
-2. "Test Agent: Write tests for above"
-3. "Review Agent: Review code and tests"
-4. "Documentation Agent: Update technical-design.md and api docs"
+1. /dev-scaffold MyService         → creates folder structure + boilerplate
+2. /dev-implement [feature]        → writes production code + wires DI
+3. /test [feature]                 → writes unit + integration tests + coverage analysis
+4. /review                         → reviews code, tests, security
+5. /docs                           → updates technical-design.md and API docs
 ```
+
+For existing services, skip `/dev-scaffold` and start at `/dev-implement`.
 
 ---
 
@@ -38,9 +42,10 @@ Manual, sequential:
 .claude/
 ├── instructions.md (this file)
 ├── guard-rails.md
-├── sub-agents/ (4 agent folders with agent.md)
-├── context/ (empty, fill as needed)
-└── templates/ (empty, fill as needed)
+├── skills/ (5 skill folders with SKILL.md)
+├── context/ (fill with team-specific standards)
+├── config/ (MCP server configuration)
+└── templates/ (reusable starters, fill as needed)
 
 docs/
 ├── {microservice-name}/
@@ -65,7 +70,7 @@ src/ + tests/ → Standard .NET structure
 ## Guard Rails (Quick Reference)
 
 **Code:**
-- .NET 10+ only
+- .NET 9 only
 - Async/await mandatory
 - Dependency injection required
 - Clear naming (PascalCase classes, camelCase variables)
@@ -90,18 +95,18 @@ src/ + tests/ → Standard .NET structure
 
 ---
 
-## Context Files (Empty, Fill Later)
+## Context Files (Fill with Team Standards)
 
-- ms-dotnet-patterns.md
-- azure-best-practices.md
-- naming-conventions.md
-- security-standards.md
-- common-libraries.md
-- microservices-patterns.md
+- `ms-dotnet-patterns.md` — .NET patterns and conventions
+- `azure-best-practices.md` — Azure service configuration
+- `naming-conventions.md` — naming rules for your team
+- `security-standards.md` — auth, data protection, compliance
+- `common-libraries.md` — approved NuGet packages
+- `microservices-patterns.md` — service communication patterns
 
 ---
 
-## Templates (Empty, Fill Later)
+## Templates (Fill as Needed)
 
 - appsettings.template.json
 - Program.cs.template
@@ -114,12 +119,12 @@ src/ + tests/ → Standard .NET structure
 ## First Use
 
 1. Clone repo
-2. Create microservice folder in src/
-3. Create technical-design.md in docs/{service}/
-4. Invoke Developer Agent
-5. Invoke Test Agent
-6. Invoke Review Agent
-7. Invoke Documentation Agent
-8. Commit to git
+2. `/dev-scaffold MyService` — creates structure + boilerplate + .sln
+3. Create `docs/MyService/technical-design.md` with your design
+4. `/dev-implement [first feature]`
+5. `/test [first feature]`
+6. `/review`
+8. `/docs`
+9. Commit to git
 
 Done!

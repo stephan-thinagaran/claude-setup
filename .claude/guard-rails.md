@@ -2,7 +2,7 @@
 
 ## Code Standards
 
-- [ ] .NET 10+ only (no older versions)
+- [ ] .NET 9 (current stable, no older versions)
 - [ ] Async/await for all I/O operations
 - [ ] Dependency injection mandatory (constructor injection)
 - [ ] Naming: PascalCase for classes/methods, camelCase for variables
@@ -44,3 +44,11 @@
 - [ ] Use managed identity for auth
 - [ ] Use Application Insights for monitoring
 - [ ] Infrastructure handled by separate team (Bicep/ARM)
+
+## Skill Workflow Enforcement
+
+Skills must be run in order: `/dev-scaffold` → `/dev-implement` → `/test` → `/review` → `/docs`
+
+- `/review` runs AFTER code and tests are written
+- `/docs` runs AFTER review passes
+- Each skill respects its boundary (e.g., `/test` does not modify production code)

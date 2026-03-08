@@ -2,7 +2,7 @@
 
 ## Technology Stack
 
-- **.NET 10** (latest)
+- **.NET 9** (current stable)
 - **C#** (production language)
 - **xUnit** (testing framework)
 - **Azure SQL / Cosmos DB** (data storage)
@@ -25,11 +25,34 @@ Each microservice follows standard .NET structure:
 
 ```
 {MicroserviceName}/
+├── {MicroserviceName}.csproj
+├── Program.cs
+├── appsettings.json
 ├── Controllers/          → API endpoints
 ├── Services/            → Business logic
 ├── Models/              → Request/Response DTOs
 ├── Data/                → Database context, repositories
 └── Infrastructure/      → Exceptions, middleware, utilities
+```
+
+## Solution File (.sln)
+
+For multi-service repos, use a solution file at the repo root:
+
+```
+MyProject.sln
+├── src/ServiceA/ServiceA.csproj
+├── src/ServiceB/ServiceB.csproj
+├── tests/ServiceA.Tests/ServiceA.Tests.csproj
+└── tests/ServiceB.Tests/ServiceB.Tests.csproj
+```
+
+The `/dev-scaffold` skill creates or updates the `.sln` file automatically when scaffolding a new service. To manage manually:
+
+```bash
+dotnet new sln -n MyProject                           # create solution
+dotnet sln add src/ServiceA/ServiceA.csproj            # add project
+dotnet sln add tests/ServiceA.Tests/ServiceA.Tests.csproj  # add test project
 ```
 
 ## Communication Patterns
@@ -59,16 +82,18 @@ Each microservice follows standard .NET structure:
 - Implementation details documented
 - Security considerations recorded
 
-## Agent Workflow
+## Skills Workflow
 
 ```
-Developer Agent (writes code)
+/dev-scaffold (creates structure + boilerplate)
     ↓
-Test Agent (writes tests, checks coverage)
+/dev-implement (writes production code + wires DI)
     ↓
-Review Agent (checks quality, security, compliance)
+/test (writes unit + integration tests + coverage analysis)
     ↓
-Documentation Agent (updates technical design, API docs)
+/review (checks quality, security, compliance)
+    ↓
+/docs (updates technical design, API docs)
     ↓
 Git commit
 ```

@@ -1,11 +1,11 @@
 # Claude Code MS/Azure Template
 
-A generic, reusable Claude Code template for building .NET 10 microservices on Microsoft Azure.
+A generic, reusable Claude Code template for building .NET 9 microservices on Microsoft Azure.
 
 ## What Is This?
 
 This is a pre-configured template with:
-- **4 AI Agents** (Developer, Test, Review, Documentation)
+- **5 Claude Code Skills** (scaffold, implement, test, review, docs)
 - **Guard Rails** (standards and best practices)
 - **Folder Structure** (organized, scalable)
 - **Context Files** (knowledge base, to be filled)
@@ -17,25 +17,26 @@ Clone this repo as a starting point for any new microservice project.
 
 1. Clone this repo
 2. Read `.claude/instructions.md`
-3. Create your microservice folder in `src/`
-4. Create technical design in `docs/{service}/`
-5. Invoke agents: Developer → Test → Review → Documentation
+3. `/dev-scaffold MyService` — creates structure + boilerplate
+4. Create technical design in `docs/MyService/`
+5. Implement: `/dev-implement` → `/test` → `/review` → `/docs`
 
-## Agents
+## Skills
 
-| Agent | Role |
-|-------|------|
-| Developer Agent | Write production code |
-| Test Agent | Write tests (>80% coverage) |
-| Review Agent | Review for quality & security |
-| Documentation Agent | Update technical design & API docs |
+| Skill | Purpose |
+|-------|---------|
+| `/dev-scaffold` | Create microservice folder structure + boilerplate |
+| `/dev-implement` | Write production C# code + wire DI |
+| `/test` | Write xUnit unit + integration tests + coverage analysis |
+| `/review` | Review code for quality, security, guard rails |
+| `/docs` | Create/update technical design + API docs |
 
-See `.claude/sub-agents/` for detailed instructions for each agent.
+See `.claude/skills/` for detailed instructions for each skill.
 
 ## Folder Structure
 
 ```
-.claude/          → Claude Code configuration
+.claude/          → Claude Code configuration + skills
 docs/             → Technical design + API documentation
 src/              → Microservices source code
 tests/            → Unit and integration tests
@@ -44,7 +45,7 @@ tests/            → Unit and integration tests
 ## Guard Rails
 
 All code must follow standards in `.claude/guard-rails.md`:
-- .NET 10+ only
+- .NET 9
 - Async/await mandatory
 - Dependency injection required
 - No hardcoded secrets
@@ -56,12 +57,13 @@ All code must follow standards in `.claude/guard-rails.md`:
 Read these files in order:
 1. `.claude/instructions.md` - Master guide
 2. `.claude/guard-rails.md` - Standards
-3. `.claude/sub-agents/{agent}/agent.md` - Agent instructions
+3. `.claude/skills/{skill}/SKILL.md` - Skill instructions
 
 Then start using it!
 
 ## Context Files (To Fill)
 
+These are team-specific — fill with your standards:
 - `ms-dotnet-patterns.md`
 - `azure-best-practices.md`
 - `naming-conventions.md`

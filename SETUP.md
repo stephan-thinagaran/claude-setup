@@ -2,9 +2,9 @@
 
 ## Prerequisites
 
-- .NET 10 SDK installed
+- .NET 9 SDK installed
 - Git configured
-- Claude Code or Claude AI access
+- Claude Code CLI installed
 - Text editor or IDE (VS Code, Visual Studio)
 
 ## Initial Setup
@@ -21,44 +21,40 @@ cd MyMicroservice
 In this order:
 1. `README.md` - Overview
 2. `ARCHITECTURE.md` - Technology stack and patterns
-3. `.claude/instructions.md` - How to use Claude Code
+3. `.claude/instructions.md` - How to use Claude Code skills
 
-### 3. Create Your Microservice
+### 3. Scaffold Your Microservice
 
-```bash
-# Create source folder
-mkdir -p src/YourService/Controllers
-mkdir -p src/YourService/Services
-mkdir -p src/YourService/Models
-mkdir -p src/YourService/Data
-mkdir -p src/YourService/Infrastructure
+Use the `/dev-scaffold` skill to create your microservice structure automatically:
 
-# Create test folder
-mkdir -p tests/YourService.Tests/UnitTests
-mkdir -p tests/YourService.Tests/IntegrationTests
-
-# Create documentation folder
-mkdir -p docs/YourService
 ```
+/dev-scaffold UserService
+```
+
+This creates:
+- `src/UserService/` with .csproj, Program.cs, appsettings.json, and folder structure
+- `tests/UserService.Tests/` with test project and folders
+- `docs/UserService/technical-design.md` template
+- Creates or updates the `.sln` solution file
 
 ### 4. Create Technical Design
 
-Create `docs/YourService/technical-design.md` with:
+Edit `docs/UserService/technical-design.md` with:
 - Microservice purpose
 - Key responsibilities
 - Architecture approach
 - Data model overview
 - External dependencies
 
-### 5. Use Claude Code
+### 5. Implement Features
 
-Invoke agents in sequence:
+Use skills in sequence:
 
 ```
-Developer Agent: Implement [feature]
-Test Agent: Write tests for [feature]
-Review Agent: Review code and tests
-Documentation Agent: Update technical design and API docs
+/dev-implement Implement user CRUD endpoints
+/test Write tests for user CRUD endpoints
+/review
+/docs
 ```
 
 ## File Structure Example
@@ -67,22 +63,23 @@ After setup, your project looks like:
 
 ```
 claude-code-ms-azure-template/
-├── .claude/                    ← Claude Code config (don't modify)
+├── .claude/                    ← Claude Code config
 │   ├── instructions.md
 │   ├── guard-rails.md
-│   ├── sub-agents/
+│   ├── skills/
 │   ├── context/
+│   ├── config/
 │   └── templates/
 │
 ├── docs/
-│   └── YourService/
+│   └── UserService/
 │       ├── technical-design.md
-│       ├── api-endpoint-1.md
-│       └── api-endpoint-2.md
+│       ├── api-users.md
+│       └── api-auth.md
 │
 ├── src/
-│   ├── YourService/
-│   │   ├── YourService.csproj
+│   ├── UserService/
+│   │   ├── UserService.csproj
 │   │   ├── Program.cs
 │   │   ├── Controllers/
 │   │   ├── Services/
@@ -93,17 +90,30 @@ claude-code-ms-azure-template/
 │   └── AnotherService/
 │
 ├── tests/
-│   ├── YourService.Tests/
+│   ├── UserService.Tests/
 │   │   ├── UnitTests/
 │   │   └── IntegrationTests/
 │   │
 │   └── AnotherService.Tests/
 │
+├── MyProject.sln
 ├── README.md
 ├── ARCHITECTURE.md
 ├── SETUP.md
 └── .gitignore
 ```
+
+## Solution File (.sln)
+
+For multi-service repos, keep a `.sln` at the repo root. The `/dev-scaffold` skill manages this automatically. To manage manually:
+
+```bash
+dotnet new sln -n MyProject
+dotnet sln add src/UserService/UserService.csproj
+dotnet sln add tests/UserService.Tests/UserService.Tests.csproj
+```
+
+This enables `dotnet build` and `dotnet test` to work across all projects from the repo root.
 
 ## Configuration
 
@@ -126,11 +136,7 @@ Copy template from `.claude/templates/appsettings.template.json` (when available
 
 ### Program.cs
 
-Use `.claude/templates/Program.cs.template` (when available) as starting point:
-- Configure dependency injection
-- Register services
-- Configure middleware
-- Setup logging
+The `/dev-scaffold` skill generates a minimal Program.cs. The `/dev-implement` skill wires up DI registrations as part of implementation.
 
 ## Guard Rails Checklist
 
@@ -148,33 +154,31 @@ See `.claude/guard-rails.md` for complete checklist.
 ## First Feature Development
 
 1. Update `docs/YourService/technical-design.md` if needed
-2. "Developer Agent: Implement [feature] endpoint"
-3. "Test Agent: Write tests for [feature]"
-4. "Review Agent: Review code and tests"
-5. "Documentation Agent: Update technical-design.md and create api-[feature].md"
-6. `git commit` with clear message
+2. `/dev-implement [feature]`
+3. `/test [feature]`
+5. `/review`
+6. `/docs`
+7. `git commit` with clear message
 
 ## Troubleshooting
 
-**Code rejected by Review Agent?**
+**Code rejected by `/review`?**
 - Check `.claude/guard-rails.md`
-- Review examples in `.claude/sub-agents/developer-agent/examples/`
 - Verify async/await, DI, error handling
+- Ensure no hardcoded secrets
 
 **Test coverage below 80%?**
-- Check which methods aren't tested
-- Add tests for edge cases and errors
-- Review test examples in `.claude/sub-agents/test-agent/examples/`
+- Run `/test` again to analyze coverage gaps and fill them
+- Add tests for edge cases and error scenarios
 
 **Don't know which pattern to use?**
-- Check `.claude/context/ms-dotnet-patterns.md` (to be filled)
+- Check `.claude/context/ms-dotnet-patterns.md` (fill with your patterns)
 - Look at existing microservices in `src/`
-- Ask in documentation or code comments
 
 ## Next Steps
 
-1. Create your first microservice folder structure
+1. Scaffold your first microservice with `/dev-scaffold`
 2. Write technical design document
-3. Start implementing features with agents
+3. Start implementing features with skills
 4. Commit to git
 5. Fill context files and templates as you discover patterns
